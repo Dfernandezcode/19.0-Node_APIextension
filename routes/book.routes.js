@@ -50,14 +50,15 @@ router.get("/title/:title", async (req, res) => {
 
 // Endpoint Book creation: - CRUD: CREATE
 router.post("/", async (req, res) => {
-  console.log(req.headers);
   try {
-    const book = new Book({
-      title: req.body.title,
-      author: req.body.author,
-      pages: req.body.pages,
-    });
+    // const book = new Book({
+    //   title: req.body.title,
+    //   author: req.body.author,
+    //   pages: req.body.pages,
+    //   publisher: req.body.name,
+    // });
 
+    const book = new Book(req.body);
     const createdBook = await book.save();
     return res.status(201).json(createdBook);
   } catch (error) {
@@ -116,20 +117,3 @@ router.get("/:id", async (req, res) => {
     res.status(500).json(error);
   }
 });
-
-// TO DOS
-/*
-Cambiar todas las promesas por async/await
-  ++Search by title
-  ++Search by ID
-  ++Get books
-  ++ Create book
-  - Update book
-  ++ Delete book by ID
-
-Añadir el fichero launch.json y depurar tu código para aprender a usar el modo debug de VSCode
-Añade el objeto publisher (editorial) dentro de los libros
-Corrige el fichero index.js para que sea asíncrono y espere a la conexión para seguir ejecutando el código con await connect();
-Modifica tu código para que el nombre de la base de datos lo lea de una variable de entorno, en local usa la de desarrollo (DEVELOPMENT)
-Añade el fichero vercel.json y despliega tu proyecto en Vercel haciendo que use la base de datos de PRODUCTION
-*/
