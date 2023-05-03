@@ -10,19 +10,12 @@ router.get("/", async (req, res) => {
   // How to read query.params
   console.log(req.query);
   try {
-    // Asi leemos query params
     const page = parseInt(req.query.page);
     const limit = parseInt(req.query.limit);
     const books = await Book.find()
       .limit(limit)
       .skip((page - 1) * limit);
 
-    // LIMIT 10, PAGE 1 -> SKIP = 0
-    // LIMIT 10, PAGE 2 -> SKIP = 10
-    // LIMIT 10, PAGE 3 -> SKIP = 20
-    // ...
-
-    // Num total de elementos
     const totalElements = await Book.countDocuments();
 
     const response = {
@@ -33,28 +26,6 @@ router.get("/", async (req, res) => {
     };
 
     res.json(response);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
-
-// search functionality: - CRUD: READ
-router.get("/book", (req, res) => {
-  Book.find()
-    .then((books) => res.json(books))
-    .catch((error) => res.status(500).json(error));
-});
-
-// get by ID
-router.get("/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    const book = await Book.findById(id);
-    if (book) {
-      res.json(book);
-    } else {
-      res.status(404).json({});
-    }
   } catch (error) {
     res.status(500).json(error);
   }
@@ -78,7 +49,8 @@ router.get("/title/:title", async (req, res) => {
 });
 
 // Endpoint Book creation: - CRUD: CREATE
-router.post("/book", async (req, res) => {
+router.post("/", async (req, res) => {
+  console.log(req.headers);
   try {
     const book = new Book({
       title: req.body.title,
@@ -112,6 +84,7 @@ router.delete("/:id", async (req, res) => {
 // Book update: - CRUD: UPDATE
 // (req.body) is an object with all info to be updated.
 // { new: true } - is a parameter that will return "new updated database entry"
+
 router.put("/:id", async (req, res) => {
   try {
     // returns deleted book
@@ -128,3 +101,35 @@ router.put("/:id", async (req, res) => {
 });
 
 module.exports = { bookRouter: router };
+
+// get by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const book = await Book.findById(id);
+    if (book) {
+      res.json(book);
+    } else {
+      res.status(404).json({});
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// TO DOS
+/*
+Cambiar todas las promesas por async/await
+  ++Search by title
+  ++Search by ID
+  ++Get books
+  ++ Create book
+  - Update book
+  ++ Delete book by ID
+
+Añadir el fichero launch.json y depurar tu código para aprender a usar el modo debug de VSCode
+Añade el objeto publisher (editorial) dentro de los libros
+Corrige el fichero index.js para que sea asíncrono y espere a la conexión para seguir ejecutando el código con await connect();
+Modifica tu código para que el nombre de la base de datos lo lea de una variable de entorno, en local usa la de desarrollo (DEVELOPMENT)
+Añade el fichero vercel.json y despliega tu proyecto en Vercel haciendo que use la base de datos de PRODUCTION
+*/

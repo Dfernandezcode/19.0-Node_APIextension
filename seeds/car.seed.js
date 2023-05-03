@@ -20,18 +20,29 @@ for (let i = 0; i < 50; i++) {
   carList.push(newCar);
 }
 
-connect().then(() => {
-  console.log("Tenemos conexión");
+// [async- await] is used to replace [.then] and [.catch]
 
-  // Borrar datos
-  Car.collection.drop().then(() => {
+const carSeed = async () => {
+  try {
+    await connect();
+    console.log("Tenemos conexión");
+
+    // Borrar datos
+    await Car.collection.drop();
     console.log("Coches eliminados");
 
     // Añadimos usuarios
     const documents = carList.map((user) => new Car(user));
-    Car.insertMany(documents)
-      .then(() => console.log("Datos guardados correctamente!"))
-      .catch((error) => console.error(error))
-      .finally(() => mongoose.disconnect());
-  });
-});
+    await Car.insertMany(documents);
+
+    console.log("Datos guardados correctamente!");
+  } catch (error) {
+    console.error(error);
+  } finally {
+    mongoose.disconnect();
+  }
+};
+
+console.log("ANTES");
+carSeed(); // ESPERO VER: "Tenemos conexión", "Coches eliminados" y "Datos guardados correctamente!"
+console.log("DESPUÉS");

@@ -9,11 +9,19 @@ const bookList = [
     title: "Harry Potter",
     author: "J.K. Rowling",
     pages: 543,
+    publisher: {
+      name: "Bloomsbury",
+      country: "United Kingdom",
+    },
   },
   {
     title: "1984",
     author: "George Orwell",
     pages: 328,
+    publisher: {
+      name: "Secker & Warburg",
+      country: "United Kingdom",
+    },
   },
   {
     title: "To Kill a Mockingbird",

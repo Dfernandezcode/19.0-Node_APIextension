@@ -15,6 +15,20 @@ const bookSchema = new Schema(
       type: Number,
       required: false,
     },
+    // How to create object schemas
+    publisher: {
+      type: {
+        name: {
+          type: String,
+          required: true,
+        },
+        country: {
+          type: String,
+          required: true,
+        },
+      },
+      required: false,
+    },
   },
   {
     timestamps: true,

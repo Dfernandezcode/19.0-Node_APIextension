@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const mongoose = require("mongoose");
 const { connect } = require("../db.js");
 const { Crypto } = require("../models/Crypto.js");
