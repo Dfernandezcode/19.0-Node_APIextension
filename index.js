@@ -2,6 +2,43 @@ const express = require("express");
 const { cryptoRouter } = require("./routes/crypto.routes.js");
 const { bookRouter } = require("./routes/book.routes.js");
 
+// Async-Await function to solve error 500 in VERCEL
+const main = async () => {
+  // Conexión a la BBDD
+  const { connect } = require("./db.js");
+  await connect();
+
+  // Configuración del server
+  const PORT = 3000;
+  const server = express();
+  server.use(express.json());
+  server.use(express.urlencoded({ extended: false }));
+
+  // Rutas
+  const router = express.Router();
+  router.get("/", (req, res) => {
+    res.send("Esta es la home de nuestra API");
+  });
+  router.get("*", (req, res) => {
+    res.status(404).send("Lo sentimos :( No hemos encontrado la página solicitada.");
+  });
+
+  // Usamos las rutas
+  server.use("/book", bookRouter);
+  server.use("/crypto", cryptoRouter);
+  // server.use("/book", carRouter);
+  // server.use("/crypto", userRouter);
+  server.use("/", router);
+
+  server.listen(PORT, () => {
+    console.log(`Server levantado en el puerto ${PORT}`);
+  });
+};
+
+main();
+
+// Router config below causes VERCEL connection errors (500)
+/*
 // BBDD connection
 const { connect } = require("./db.js");
 connect();
@@ -31,6 +68,7 @@ server.use("/", router);
 server.listen(PORT, () => {
   console.log(`Server online using ${PORT}`);
 });
+*/
 
 // TO DOS
 /*
