@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { connect } = require("../db.js");
 const { Author } = require("../models/Author.js");
+const { faker } = require("@faker-js/faker");
 
 const authorSeed = async () => {
   try {
@@ -24,6 +25,16 @@ const authorSeed = async () => {
       { name: "Chinua Achebe", country: "Nigeria" },
     ];
 
+    for (let i = 0; i < 50; i++) {
+      const newAuthor = {
+        name: faker.name.fullName(),
+        country: faker.address.country(),
+      };
+
+      // console logs are not always the best way to debug. Not worst, not always muost useful.
+      console.log(newAuthor.form);
+      authorList.push(newAuthor);
+    }
     // Añadimos authors
     const documents = authorList.map((author) => new Author(author));
     await Author.insertMany(documents);

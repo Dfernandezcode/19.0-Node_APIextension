@@ -41,9 +41,12 @@ router.get("/:id", async (req, res) => {
     const id = req.params.id;
     const author = await Author.findById(id);
 
+    const books = await Book.find({ author: id });
+    console.log(books);
+
     if (author) {
       const temporal = author.toObject();
-      const includeBooks = req.query.includeBook === "true";
+      const includeBooks = req.query.includeBooks === "true";
       if (includeBooks) {
         const books = await Book.find({ owner: id });
         temporal.books = books;
@@ -63,7 +66,7 @@ router.get("/name/:name", async (req, res) => {
   const name = req.params.name;
 
   try {
-    const author = await Author.find({ firstName: new RegExp("^" + name.toLowerCase(), "i") });
+    const author = await Author.find({ name: new RegExp("^" + name.toLowerCase(), "i") });
     if (author?.length) {
       res.json(author);
     } else {
