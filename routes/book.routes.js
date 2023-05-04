@@ -14,7 +14,8 @@ router.get("/", async (req, res) => {
     const limit = parseInt(req.query.limit);
     const books = await Book.find()
       .limit(limit)
-      .skip((page - 1) * limit);
+      .skip((page - 1) * limit)
+      .populate("author");
 
     const totalElements = await Book.countDocuments();
 
@@ -37,7 +38,7 @@ router.get("/title/:title", async (req, res) => {
 
   try {
     // const book = await Book.find({ title: title });
-    const book = await Book.find({ title: new RegExp("^" + title.toLowerCase(), "i") });
+    const book = await Book.find({ title: new RegExp("^" + title.toLowerCase(), "i") }).populate("author");
     if (book) {
       res.json(book);
     } else {
@@ -101,13 +102,11 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-module.exports = { bookRouter: router };
-
 // get by ID
 router.get("/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const book = await Book.findById(id);
+    const book = await Book.findById(id).populate("author");
     if (book) {
       res.json(book);
     } else {
@@ -117,3 +116,5 @@ router.get("/:id", async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+module.exports = { bookRouter: router };

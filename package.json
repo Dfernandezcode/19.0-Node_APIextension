@@ -12,6 +12,7 @@
     "seed:user": "node ./seeds/user.seed.js",
     "seed:car": "node ./seeds/car.seed.js",
     "seed:book": "node ./seeds/book.seed.js",
+    "seed:author": "node ./seeds/author.seed.js",
     "seed:crypto": "node ./seeds/crypto.seed.js"
   },
   "keywords": [],

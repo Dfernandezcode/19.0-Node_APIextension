@@ -274,3 +274,4 @@ router.get("/:id", async (req, res) => {
 });
 
 // JSDoc
+module.exports = { cryptoRouter: router };

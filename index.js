@@ -1,8 +1,10 @@
 const express = require("express");
 const { cryptoRouter } = require("./routes/crypto.routes.js");
 const { bookRouter } = require("./routes/book.routes.js");
-
+const { authorRouter } = require("./routes/author.routes.js");
 // Async-Await function to solve error 500 in VERCEL
+
+// REMEMBER - all Await functions MUST be in Async function.
 const main = async () => {
   // Conexión a la BBDD
   const { connect } = require("./db.js");
@@ -25,6 +27,7 @@ const main = async () => {
 
   // Usamos las rutas
   server.use("/book", bookRouter);
+  server.use("/author", authorRouter);
   server.use("/crypto", cryptoRouter);
   // server.use("/book", carRouter);
   // server.use("/crypto", userRouter);

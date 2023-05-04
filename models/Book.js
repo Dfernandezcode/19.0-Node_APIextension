@@ -8,13 +8,19 @@ const bookSchema = new Schema(
       required: true,
     },
     author: {
-      type: String,
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Author",
+      required: false,
     },
+    // author: {
+    //   type: String,
+    //   required: true,
+    // },
     pages: {
       type: Number,
       required: false,
     },
+
     // How to create object schemas
     publisher: {
       type: {
